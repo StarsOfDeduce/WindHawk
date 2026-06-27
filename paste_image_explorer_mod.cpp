@@ -4,7 +4,7 @@
 // @description     Allows pasting copied images (like WeChat screenshots) as PNG files directly in Windows Explorer (Desktop, folders, file dialogs) using Ctrl+V or the right-click Paste menu item.
 // @version         1.0.0
 // @author          Antigravity
-// @github          https://github.com/StarsofDeduce
+// @github          https://github.com/StarsofDeduce/WindHawk
 // @include         explorer.exe
 // @compilerOptions -lgdiplus -lole32 -lgdi32 -luuid
 // ==/WindhawkMod==
