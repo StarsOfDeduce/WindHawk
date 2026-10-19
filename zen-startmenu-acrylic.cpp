@@ -7763,6 +7763,8 @@ _Use_decl_annotations_ STDAPI DllCanUnloadNow(void)
 
 #pragma region api_cpp
 
+#include <stdio.h>
+
 using PFN_INITIALIZE_XAML_DIAGNOSTICS_EX = decltype(&InitializeXamlDiagnosticsEx);
 
 HRESULT InjectWindhawkTAP() noexcept
@@ -7800,7 +7802,17 @@ HRESULT InjectWindhawkTAP() noexcept
     for (int i = 0; i < 10000; i++)
     {
         WCHAR connectionName[256];
-        wsprintf(connectionName, L"VisualDiagConnection%d", i + 1);
+        static_assert(ARRAYSIZE(L"VisualDiagConnection10000") <= ARRAYSIZE(connectionName),
+                      "connectionName must fit the longest generated name");
+
+        // wsprintf performs no bounds checking. Use the size-checked variant
+        // instead and fail closed if the name could not be formatted, rather
+        // than passing a partially written name to the API below.
+        if (swprintf_s(connectionName, ARRAYSIZE(connectionName), L"VisualDiagConnection%d",
+                       i + 1) < 0)
+        {
+            return E_UNEXPECTED;
+        }
 
         hr = ixde(connectionName, GetCurrentProcessId(), L"", location, CLSID_WindhawkTAP, nullptr);
         if (hr != HRESULT_FROM_WIN32(ERROR_NOT_FOUND))
