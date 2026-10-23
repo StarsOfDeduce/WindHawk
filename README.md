@@ -1,61 +1,79 @@
-# 🛠️ StarsOfDeduce 的 WindHawk 脚本仓库
+# StarsOfDeduce Windhawk Mods
 
-这是一个用于存放我个人使用的 Windhawk 补丁（Mods）、微调脚本与系统美化代码的本地及 GitHub 仓库。
+A small collection of personal [Windhawk](https://windhawk.net/) mods for refining the Windows desktop, Start menu, and File Explorer.
 
----
+These mods run inside Windows shell processes through Windhawk. Review the source, compatibility notes, and per-file licensing before installing or redistributing them.
 
-## 🌟 补丁索引 (Mods Index)
+## Mods
 
-本仓库目前包含以下 Windhawk 脚本：
+### ZenDesktop: Desktop Icon Toggle and Auto-Hide
 
-### 1. 🖱️ 双击隐藏桌面图标与空闲自动隐藏 (`zen-desktop-toggle-icons.cpp`)
+| Field | Value |
+| :--- | :--- |
+| File | [`zen-desktop-toggle-icons.cpp`](zen-desktop-toggle-icons.cpp) |
+| Mod ID | `zen-desktop-toggle-icons` |
+| Version | `3.4.0` |
+| Author metadata | `StarsOfDeduce` |
+| Target | `explorer.exe` on x86-64 Windows |
 
-* **补丁 ID**: `zen-desktop-toggle-icons`
-* **描述**: 注入并子类化桌面 Shell 视图。支持通过双击桌面空白处快速隐藏或显示桌面图标，并包含在系统空闲时自动隐藏图标的定时功能。
-* **核心功能**:
-  * **双击快速切换**: 双击桌面任意空白位置一键切换图标的隐藏/显示状态。
-  * **状态持久化保存**: 自动记住您的显示偏好，重启系统或重启资源管理器（Explorer）后依然生效。
-  * **空闲自动隐藏**: 当系统在指定时长（3-60秒）内无任何鼠标/键盘输入时，自动隐藏桌面图标；任意输入动作会立即恢复显示。
-  * **全屏避让保护**: 在运行全屏游戏、PPT 演示或视频播放时，自动暂停捕获，避免引起闪烁或抢占焦点。
+- Double-click empty desktop space to hide or show desktop icons.
+- Leaves normal double-click behavior intact when the pointer is over an icon.
+- Optionally hides icons after 3–60 seconds of system-wide inactivity.
+- Restores automatically hidden icons on mouse or keyboard input without changing icons that were hidden manually.
+- Reattaches when Explorer or the desktop view is recreated.
+- Pauses the inactivity behavior around full-screen windows to avoid distracting visual changes.
 
----
+### ZenDesktop: Start Menu Acrylic Styler
 
-### 2. 🚀 开始菜单亚克力透明美化 (`zen-startmenu-acrylic.cpp`)
+| Field | Value |
+| :--- | :--- |
+| File | [`zen-startmenu-acrylic.cpp`](zen-startmenu-acrylic.cpp) |
+| Mod ID | `zen-startmenu-acrylic` |
+| Version | `3.4.0` |
+| Author metadata | `StarsOfDeduce` |
+| Targets | `StartMenuExperienceHost.exe`, `SearchHost.exe`, and `SearchApp.exe` on x86-64 Windows |
 
-* **补丁 ID**: `zen-startmenu-acrylic`
-* **描述**: 基于 m417z 的经典开始菜单美化补丁进行深度定制，为 Windows 11 开始菜单引入高保真 WinUI 3 亚克力毛玻璃、磨砂玻璃效果，并预置了“苹果液态玻璃”视觉风格。
-* **核心功能**:
-  * **高保真亚克力**: 支持在设置中实时调整模糊度（0-60）、颜色填充浓度和通透亮度。
-  * **颜色主题预设**: 可跟随系统强调色，或强制使用晶莹透白、深空极黑、深海湛蓝、极光幻青等多种预设色彩。
-  * **布局控制选项**: 可自定义标签文字的显示模式（显示、完全隐藏、鼠标悬浮显示），并支持对经典或新版开始菜单布局进行微调。
+- Adds configurable acrylic and frosted-glass styling to the Windows 11 Start menu.
+- Provides blur, tint, opacity, and color presets, including light, dark, blue, cyan, and liquid-glass-inspired looks.
+- Includes layout and label-visibility controls for supported Start menu variants.
+- Builds on m417z's Start Menu Styler and its community theme system.
 
----
+### Paste Clipboard Images as Files in Explorer
 
-### 3. 📋 剪贴板图片直接在资源管理器粘贴为文件 (`explorer-paste-clipboard-images.cpp`)
+| Field | Value |
+| :--- | :--- |
+| File | [`paste_image_explorer_mod.cpp`](paste_image_explorer_mod.cpp) |
+| Mod ID | `explorer-paste-clipboard-images` |
+| Version | `1.0.0` |
+| Author metadata | `Antigravity` |
+| Target | `explorer.exe` |
 
-* **补丁 ID**: `explorer-paste-clipboard-images`
-* **描述**: 解决 Windows 系统中“从微信/QQ截图、浏览器复制的剪贴板图片无法直接在文件管理器中粘贴为文件”的痛点。
-* **核心功能**:
-  * **剪贴板智能拦截**: 自动分析剪贴板中是否存在 DIB、位图或 PNG 等图像数据。
-  * **一键粘贴为文件**: 在桌面、任意文件夹或另存为窗口中，直接按下 `Ctrl + V` 或右键选择“粘贴”，即可直接生成带时间戳 of PNG 格式图片文件（例如：`PastedImage_20260627_193025.png`）。
-  * **原生注入无残留**: 采用 Windhawk 进程级 Hook 技术注入 `explorer.exe`，不产生常驻后台进程，0% CPU 开销。
+- Detects PNG, DIB, and bitmap image data on the clipboard.
+- Lets Explorer paste copied images as timestamped PNG files with `Ctrl` + `V` or the Paste command.
+- Works with common screenshot sources such as messaging applications and browsers.
+- Generates names such as `PastedImage_20261023_142530.png` and adds a numeric suffix when needed.
+- Runs through the Explorer integration rather than a separate background executable.
 
----
+## Installation
 
-## 📥 安装与本地编译指南
+1. Install and open [Windhawk](https://windhawk.net/).
+2. Open the advanced tools and create a new mod.
+3. Copy the complete contents of the desired `.cpp` file into the Windhawk editor.
+4. Save and compile the mod.
+5. Review the mod's settings and enable it when ready.
 
-由于本仓库内的所有补丁均为 C++ 编写的本地编译补丁，请按照以下步骤将其安装至您的 Windhawk 中：
+Windhawk downloads the required build components and loads the compiled mod into the process named in its metadata. If compilation fails after a Windows or Windhawk update, disable the mod and check the source or issue tracker before retrying.
 
-1. 打开 **Windhawk** 软件。
-2. 确保在设置中开启了“开发人员模式”（或直接进入高级功能）。
-3. 在 Windhawk 界面中点击 **“新建补丁”** (Create New Mod)。
-4. 复制本仓库中对应 `.cpp` 文件的全部源代码，粘贴覆盖到编辑器的代码框中。
-5. 点击右上角的 **“保存并编译”** (Save and Compile)。
-6. 编译器将耗时约 10 秒完成本地依赖下载与编译，编译成功后补丁即时生效。
+## Safety notes
 
----
+- These are native process-injection mods. A defect can restart or destabilize Explorer, the Start menu, or Search.
+- Test one mod at a time and keep a way to open Windhawk and disable it.
+- Compatibility can change with Windows updates because shell implementation details are not a stable public API.
+- The clipboard mod writes image data to the destination selected in Explorer; check that location before pasting sensitive screenshots.
 
-## 🎨 鸣谢与参考项目
+## Attribution and licensing
 
-* **Windhawk**: 感谢 [m417z / Ramen Software](https://windhawk.net/) 提供的优秀原生补丁引擎与 Hook 框架。
-* **ZenDesktop**: 原始桌面修改方案由 [Lanbo](https://github.com/Liset999) 与 m417z 共同开发。
+- [Windhawk](https://windhawk.net/) is created by m417z / Ramen Software.
+- The desktop interaction approach draws on work by [Lanbo](https://github.com/Liset999) and m417z.
+- `zen-startmenu-acrylic.cpp` states that its source is published under the GNU General Public License v3.0 and contains upstream attribution.
+- This repository does not declare one repository-wide license. Review the header and upstream terms of each source file before redistribution.
